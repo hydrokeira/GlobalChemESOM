@@ -60,7 +60,7 @@ names(BestMatches) <- c("obs", "row", "col", "id")
 
 weights_clust<-res$Weights
 
-#kmeans using 6 clusters
+# test different numbers of clusters
 set.seed(123)
 
 p1<-fviz_nbclust(weights_clust, kmeans, method="wss", k.max = 20)
@@ -77,6 +77,7 @@ ggarrange(p2, p1, nrow=2, align = "v")
 
 dev.off()
 
+#kmeans with 11 clusters
 set.seed(123)
 kmeans_cluster<-kmeans(weights_clust, iter.max=50, nstart=50, centers = 11)
 
@@ -152,6 +153,8 @@ cdat_m$variable <- as.character(cdat_m$variable)
 cdat_m$variable<-factor(cdat_m$variable, levels = c("Ca", "Mg", "Na", "K", "N", "SO4", "Cl", "DSi"))
 cdat_m$value<-as.numeric(cdat_m$value)
 
+saveRDS(cdat_m, file = "cdat_m.RDS")
+
 cdat_m <- cdat_m %>%
   mutate(clust=case_when(
     clust==5~1,
@@ -166,6 +169,8 @@ cdat_m <- cdat_m %>%
     clust==9~10,
     clust==6~11
   ))
+
+
 
 pdf("ESOM_Cluster_ClusterConcentrationBoxplots_10162025.pdf", width = 10, height = 12)
 
