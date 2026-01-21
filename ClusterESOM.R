@@ -28,8 +28,7 @@ all_sites<-chem_cast_crop_CC %>%
 good_sites<-chem_cast_crop_CC %>%
   group_by(Stream_Name) %>%
   summarise(n_obs=n()) %>%
-  filter(n_obs > 9) %>%
-  filter(!str_detect(Stream_Name, "FDUP"))
+  filter(n_obs > 9)
 
 chem_cast_crop_CC <- chem_cast_crop_CC %>%
   filter(Stream_Name %in% good_sites$Stream_Name)
@@ -94,6 +93,8 @@ BestMatches_cluster<-merge(BestMatches, kmeans_clusts_mat_melt, by=c("row", "col
 #add clusters to data and plot composition of each cluster
 cont_prop$obs <- seq(1,nrow(cont_prop),1)
 cdat <- inner_join(cont_prop,BestMatches_cluster[,c("obs", "clust")], by=c("obs"))
+
+saveRDS(cdat, file = "cdat.RDS")
 
 dis <- dist(cdat[,solutes_2])^2 #squared euclidean distance
 #dis <- vegdist(cdat[,param], method="euclidean")

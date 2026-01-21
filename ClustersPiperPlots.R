@@ -144,8 +144,7 @@ all_sites<-chem_cast_crop_CC %>%
 good_sites<-chem_cast_crop_CC %>%
   group_by(Stream_Name) %>%
   summarise(n_obs=n()) %>%
-  filter(n_obs > 9) %>%
-  filter(!str_detect(Stream_Name, "FDUP"))
+  filter(n_obs > 9)
 
 chem_cast_crop_CC <- chem_cast_crop_CC %>%
   filter(Stream_Name %in% good_sites$Stream_Name)
