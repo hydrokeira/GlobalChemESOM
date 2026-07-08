@@ -4,8 +4,9 @@ require(dplyr)
 require(tidyr)
 require(stringr)
 require(ggplot2)
+require(reshape2)
 
-setwd("/Users/keirajohnson/Box Sync/Keira_Johnson/SiSyn/ESOM")
+setwd("/Users/keirajohnson/Library/CloudStorage/Box-Box/Keira_Johnson/SiSyn/ESOM")
 
 chem<-read.csv("20260105_masterdata_chem.csv")
 
@@ -86,6 +87,8 @@ chem_byYear_bySite<-chem_cast_crop_CC %>%
   mutate(date=as.Date(date), year=year(date)) %>%
   dplyr::group_by(Stream_Name) %>%
   summarise(n_years=n_distinct(year))
+
+mean(chem_byYear_bySite$n_years)
 
 pdf("Num_Years_Site.pdf", width = 10, height = 3)
 

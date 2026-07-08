@@ -1,4 +1,6 @@
-setwd("/Users/keirajohnson/Box Sync/Keira_Johnson/SiSyn/ESOM")
+require(reshape2)
+
+setwd("/Users/keirajohnson/Library/CloudStorage/Box-Box/Keira_Johnson/SiSyn/ESOM")
 
 chem<-read.csv("20260105_masterdata_chem.csv")
 
@@ -48,6 +50,18 @@ stream_clust_count<-
 stream_clust_shifting<-subset(stream_clust_count, stream_clust_count$Stream_Name %in% sites_100$Stream_Name)
 
 shifting_sites<-unique(stream_clust_shifting$Stream_Name)
+
+shifting_sites_df<-as.data.frame(shifting_sites)
+colnames(shifting_sites_df)<-"Stream_Name"
+
+unique_sites<-chem %>%
+  select(LTER, Stream_Name) %>%
+  distinct()
+
+shifting_sites_df<-shifting_sites_df %>%
+  left_join(unique_sites)
+  
+write.csv(shifting_sites_df, "Shifting_Sites.csv")
 
 cdat_shifting<-subset(cdat, cdat$Stream_Name %in% shifting_sites)
 
